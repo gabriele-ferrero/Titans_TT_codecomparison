@@ -2,6 +2,7 @@
 A code comparison study between 3 different Tritium transport softwares for the TITANS project
 mHIT code is based on COMSOL: Candido, L., & Alberghi, C. (2021). Verification and validation of mHIT code over TMAP for hydrogen isotopes transport studies in fusion-relevant environments. Fusion Engineering and Design, 172, 112740.
 Festim code is open source -> https://github.com/RemDelaporteMathurin/FESTIM
+
 R. Delaporte-Mathurin, et al., Finite Element Analysis of Hydrogen Retention in ITER Plasma Facing Components using FESTIM. Nuclear Materials and Energy, 21, (2019). https://doi.org/10.1016/j.nme.2019.100709.
 
 R. Delaporte-Mathurin, et al., Parametric Study of Hydrogenic Inventory in the ITER Divertor Based on Machine Learning. Scientific Reports, 10, (2020). https://doi.org/10.1038/s41598-020-74844-w.
