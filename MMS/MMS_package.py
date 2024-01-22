@@ -134,7 +134,12 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
     plt.text(0.25, 0.25, "2", color="white", fontdict={"size": 36})
     plt.xlim([-0.5, 0.5])
     plt.ylim([-0.5, 0.5])
-    plt.show()
+    plt.xlabel("x [m]")
+    plt.ylabel("y [m]")
+    if mms == True:
+        plt.savefig("MMS_MS_1.png", dpi=300)
+    else:
+        plt.savefig("MMS_M_1.png", dpi=300)
     COMS = np.loadtxt(filename)
 
     # Split the data into x, y, and color
@@ -166,21 +171,6 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
 
         # Convert the HLS color back to RGB
         lighter_color = colorsys.hls_to_rgb(h, lighter_l, s)
-        # mask1 = (Z_line >= 0) & (Z_line <= 50)
-        # if mms == True:
-        #     # Use the mask to filter Z_line and length
-        #     Z_line_masked1 = Z_line[mask1]
-        #     length_masked1 = length[mask1]
-        #     mask2 = (Z_line >= 100) & (Z_line <= 10000)
-
-        #     # Use the mask to filter Z_line and length
-        #     Z_line_masked2 = Z_line[mask2]
-        #     length_masked2 = length[mask2]
-        #     ax1.plot(length_masked1, Z_line_masked1, color=lighter_color)
-        #     ax2.plot(length_masked2, Z_line_masked2, color=color[i])
-        # else:
-        #     ax1.plot(length, Z_line, color=lighter_color)
-        #     ax2.plot(length, Z_line, color=color[i])
         first_index = indices[0][0] if indices[0].size > 0 else len(length)
 
         ax2.plot(length[first_index:], Z_line[first_index:], color=lighter_color)
@@ -189,31 +179,65 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
         color_line = griddata(
             (x_COMS, y_COMS), color_COMS, (x_line, y_line), method="nearest"
         )
-        ax1.scatter(
-            length[:first_index:10],
-            color_line[:first_index:10],
-            color=color[i],
-            marker="x",
-        )
-        ax2.scatter(
-            length[first_index::10],
-            color_line[first_index::10],
-            color=lighter_color,
-            marker="x",
-        )
+
         if i == 0:
+            ax2.plot(length[first_index:], Z_line[first_index:], color=lighter_color)
+            ax1.plot(
+                length[:first_index],
+                Z_line[:first_index],
+                color=color[i],
+                label="MMS Solution",
+            )
+            ax1.scatter(
+                length[:first_index:10],
+                color_line[:first_index:10],
+                color=color[i],
+                marker="o",
+                s=10,
+                label="COMSOL data",
+            )
+            ax2.scatter(
+                length[first_index::10],
+                color_line[first_index::10],
+                color=lighter_color,
+                s=10,
+                marker="o",
+            )
             ax1.tick_params(axis="y")
             ax1.set_xlabel("line length [m]")
             ax1.set_ylabel("function value in material 1", color="black")
             ax2.set_ylabel("function value in material 2", color="grey")
             ax2.tick_params(axis="y", color="grey", labelcolor="grey")
-
+            ax1.spines["top"].set_visible(False)
+            ax2.spines["top"].set_visible(False)
+            ax1.legend(frameon=False, loc="lower right")
+            ax2.legend(frameon=False, loc="lower right")
+        else:
+            ax2.plot(length[first_index:], Z_line[first_index:], color=lighter_color)
+            ax1.plot(length[:first_index], Z_line[:first_index], color=color[i])
+            ax1.scatter(
+                length[:first_index:10],
+                color_line[:first_index:10],
+                color=color[i],
+                marker="o",
+                s=10,
+            )
+        ax2.scatter(
+            length[first_index::10],
+            color_line[first_index::10],
+            color=lighter_color,
+            marker="o",
+            s=10,
+        )
         if mms == True:
             ax2.set_ylim([100, 10000])
         ax1.set_ylim([0, 50])
         if mms == False:
             ax2.set_ylim([0, 200])
         # otherwise the right y-label is slightly clipped
-    plt.xlabel("x")
-    plt.title("MMS on projected lines")
-    plt.show()
+
+    # plt.title("MMS on projected lines")
+    if mms == True:
+        fig.savefig("MMS_MS_2.png", dpi=300)
+    else:
+        fig.savefig("MMS_M_2.png", dpi=300)
