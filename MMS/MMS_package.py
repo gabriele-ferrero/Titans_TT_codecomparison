@@ -16,15 +16,7 @@ def generate_random_lines(num_lines=5, min_length=0.5, domain=[-0.5, 0.5]):
                 domain[1],
                 2,
             )
-
-            # Generate a random angle
-            angle = np.random.uniform(0, 2 * np.pi)
-
             # Calculate the maximum length based on the start point and the domain
-            max_length_x = min(x_start - domain[0], domain[1] - x_start)
-            max_length_y = min(y_start - domain[0], domain[1] - y_start)
-            max_length = min(max_length_x, max_length_y) * np.sqrt(2)
-
             # Generate a random length
             length = 0.5
 
@@ -82,10 +74,8 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
     # Generate x and y values
     x_values = np.linspace(-0.5, 0.5, 100)
     y_values = np.linspace(-0.5, 0.5, 100)
-
     # Choose a value for t
     t_value = 10  # replace with your desired value
-
     # Calculate z values
     X, Y = np.meshgrid(x_values, y_values)
     Z = fun_lambdified(X, Y, t_value)
@@ -105,7 +95,6 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
     # Plot the function
     plt.imshow(Z, extent=[-0.5, 0.5, -0.5, 0.5], origin="lower", cmap="viridis")
     fun_str = printing.latex(fun)
-
     # Use the function string as the label in the colorbar
     plt.colorbar(label="$" + fun_str + "$")
     plt.xlabel("x")
@@ -141,7 +130,6 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
     else:
         plt.savefig("MMS_M_1.png", dpi=300)
     COMS = np.loadtxt(filename)
-
     # Split the data into x, y, and color
     x_COMS = COMS[:, 0]
     y_COMS = COMS[:, 1]
@@ -178,7 +166,8 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
 
         color_line = griddata(
             (x_COMS, y_COMS), color_COMS, (x_line, y_line), method="nearest"
-        )
+        )  # !!! Due to the "nearest" method, the marker may connect with the nearest mesh point
+        # across the boundary, which may be not alligned with the analytical line
 
         if i == 0:
             ax2.plot(length[first_index:], Z_line[first_index:], color=lighter_color)
@@ -234,9 +223,6 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
         ax1.set_ylim([0, 50])
         if mms == False:
             ax2.set_ylim([0, 200])
-        # otherwise the right y-label is slightly clipped
-
-    # plt.title("MMS on projected lines")
     if mms == True:
         fig.savefig("MMS_MS_2.png", dpi=300)
     else:
