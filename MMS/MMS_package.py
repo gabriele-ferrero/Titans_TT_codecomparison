@@ -50,7 +50,21 @@ def lambdifyfun(fun):
 def lambdafyfunmms(x_line, y_line, t_value, fun, K):
     x, y, t = symbols("x y t")
     fun_lambdified = lambdify((x, y, t), fun, "numpy")
+
     fun_lambdified2 = lambdify((x, y, t), fun**2 * K, "numpy")
+
+    return np.where(
+        (x_line > 0) & (y_line > 0),
+        fun_lambdified2(x_line, y_line, t_value),
+        fun_lambdified(x_line, y_line, t_value),
+    )
+
+
+def lambdafyfunmetal(x_line, y_line, t_value, fun, K):
+    x, y, t = symbols("x y t")
+    fun_lambdified = lambdify((x, y, t), fun, "numpy")
+
+    fun_lambdified2 = lambdify((x, y, t), fun * K, "numpy")
 
     return np.where(
         (x_line > 0) & (y_line > 0),
@@ -64,6 +78,7 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
     # Create a light source
     fun_lambdified = lambdify((x, y, t), fun, "numpy")
     fun_lambdified2 = lambdify((x, y, t), fun**2 * K, "numpy")
+    fun_lambdified3 = lambdify((x, y, t), fun * K, "numpy")
     # Generate x and y values
     x_values = np.linspace(-0.5, 0.5, 100)
     y_values = np.linspace(-0.5, 0.5, 100)
@@ -80,13 +95,19 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
             fun_lambdified2(X, Y, t_value),
             fun_lambdified(X, Y, t_value),
         )
+    if mms == False:
+        Z = np.where(
+            (X > 0) & (Y > 0),
+            fun_lambdified3(X, Y, t_value),
+            fun_lambdified(X, Y, t_value),
+        )
 
     # Plot the function
     plt.imshow(Z, extent=[-0.5, 0.5, -0.5, 0.5], origin="lower", cmap="viridis")
     fun_str = printing.latex(fun)
 
     # Use the function string as the label in the colorbar
-    plt.colorbar(label=fun_str)
+    plt.colorbar(label="$" + fun_str + "$")
     plt.xlabel("x")
     plt.ylabel("y")
     plt.grid(True)
@@ -109,6 +130,8 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
     for i, line in enumerate(generated_lines):
         (x_start, y_start), (x_end, y_end) = line
         plt.plot([x_start, x_end], [y_start, y_end], color=color[i])
+    plt.text(-0.25, -0.25, "1", color="white", fontdict={"size": 36})
+    plt.text(0.25, 0.25, "2", color="white", fontdict={"size": 36})
     plt.xlim([-0.5, 0.5])
     plt.ylim([-0.5, 0.5])
     plt.show()
@@ -128,11 +151,13 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
         y_end = np.clip(y_end, 0, 1)
         x_line = np.linspace(x_start, x_end, 100)
         y_line = np.linspace(y_start, y_end, 100)
+        xy_line = np.column_stack((x_line, y_line))
+        indices = np.where((xy_line[:, 0] > 0) & (xy_line[:, 1] > 0))
         length = ((x_start - x_line) ** 2 + (y_start - y_line) ** 2) ** 0.5
         if mms == True:
             Z_line = lambdafyfunmms(x_line, y_line, t_value, fun, K)
         else:
-            Z_line = fun_lambdified(x_line, y_line, t_value)
+            Z_line = lambdafyfunmetal(x_line, y_line, t_value, fun, K)
         original_color = to_rgb(color[i])
         h, l, s = colorsys.rgb_to_hls(*original_color)
 
@@ -141,36 +166,54 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
 
         # Convert the HLS color back to RGB
         lighter_color = colorsys.hls_to_rgb(h, lighter_l, s)
-        mask1 = (Z_line >= 0) & (Z_line <= 50)
+        # mask1 = (Z_line >= 0) & (Z_line <= 50)
+        # if mms == True:
+        #     # Use the mask to filter Z_line and length
+        #     Z_line_masked1 = Z_line[mask1]
+        #     length_masked1 = length[mask1]
+        #     mask2 = (Z_line >= 100) & (Z_line <= 10000)
 
-        # Use the mask to filter Z_line and length
-        Z_line_masked1 = Z_line[mask1]
-        length_masked1 = length[mask1]
-        mask2 = (Z_line >= 100) & (Z_line <= 10000)
+        #     # Use the mask to filter Z_line and length
+        #     Z_line_masked2 = Z_line[mask2]
+        #     length_masked2 = length[mask2]
+        #     ax1.plot(length_masked1, Z_line_masked1, color=lighter_color)
+        #     ax2.plot(length_masked2, Z_line_masked2, color=color[i])
+        # else:
+        #     ax1.plot(length, Z_line, color=lighter_color)
+        #     ax2.plot(length, Z_line, color=color[i])
+        first_index = indices[0][0] if indices[0].size > 0 else len(length)
 
-        # Use the mask to filter Z_line and length
-        Z_line_masked2 = Z_line[mask2]
-        length_masked2 = length[mask2]
-        ax1.plot(length_masked1, Z_line_masked1, color=lighter_color)
-        ax2.plot(length_masked2, Z_line_masked2, color=color[i])
-        ax1.set_xlabel("x [m]")
-        ax1.set_ylabel("fun", color=color[1])
-        ax1.tick_params(axis="y", labelcolor=color[1])
+        ax2.plot(length[first_index:], Z_line[first_index:], color=lighter_color)
+        ax1.plot(length[:first_index], Z_line[:first_index], color=color[i])
+
         color_line = griddata(
-            (x_COMS, y_COMS), color_COMS, (x_line[::10], y_line[::10]), method="cubic"
+            (x_COMS, y_COMS), color_COMS, (x_line, y_line), method="nearest"
         )
-        ax1.scatter(length[::10], color_line, color=lighter_color, marker="x")
-        ax2.scatter(length[::10], color_line, color=color[i], marker="x")
-        ax2.set_ylabel(
-            "color", color=color[2]
-        )  # we already handled the x-label with ax1
-        ax2.tick_params(axis="y", labelcolor=color[2])
-        ax2.set_ylim([100, 10000])
-        ax1.set_ylim([1, 50])
+        ax1.scatter(
+            length[:first_index:10],
+            color_line[:first_index:10],
+            color=color[i],
+            marker="x",
+        )
+        ax2.scatter(
+            length[first_index::10],
+            color_line[first_index::10],
+            color=lighter_color,
+            marker="x",
+        )
+        if i == 0:
+            ax1.tick_params(axis="y")
+            ax1.set_xlabel("line length [m]")
+            ax1.set_ylabel("function value in material 1", color="black")
+            ax2.set_ylabel("function value in material 2", color="grey")
+            ax2.tick_params(axis="y", color="grey", labelcolor="grey")
+
+        if mms == True:
+            ax2.set_ylim([100, 10000])
+        ax1.set_ylim([0, 50])
+        if mms == False:
+            ax2.set_ylim([0, 200])
         # otherwise the right y-label is slightly clipped
     plt.xlabel("x")
-    ax1.set_ylabel("function value in material")
-    ax2.set_ylabel("function value in molten salt")
-
     plt.title("MMS on projected lines")
     plt.show()
