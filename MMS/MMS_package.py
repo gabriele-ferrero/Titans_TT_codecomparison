@@ -123,8 +123,8 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
     plt.text(0.25, 0.25, "2", color="white", fontdict={"size": 36})
     plt.xlim([-0.5, 0.5])
     plt.ylim([-0.5, 0.5])
-    plt.xlabel("x [m]")
-    plt.ylabel("y [m]")
+    plt.xlabel("x [m]", fontsize=16)
+    plt.ylabel("y [m]", fontsize=16)
     if mms == True:
         plt.savefig("MMS_MS_1.png", dpi=300)
     else:
@@ -193,14 +193,14 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
                 marker="o",
             )
             ax1.tick_params(axis="y")
-            ax1.set_xlabel("line length [m]")
-            ax1.set_ylabel("function value in material 1", color="black")
-            ax2.set_ylabel("function value in material 2", color="grey")
+            ax1.set_xlabel("line length [m]", fontsize=16)
+            ax1.set_ylabel("function value in material 1", color="black", fontsize=16)
+            ax2.set_ylabel("function value in material 2", color="grey", fontsize=16)
             ax2.tick_params(axis="y", color="grey", labelcolor="grey")
             ax1.spines["top"].set_visible(False)
             ax2.spines["top"].set_visible(False)
-            ax1.legend(frameon=False, loc="lower right")
-            ax2.legend(frameon=False, loc="lower right")
+            ax1.legend(frameon=False, loc="lower center", fontsize=16)
+            ax2.legend(frameon=False, loc="lower center", fontsize=16)
         else:
             ax2.plot(length[first_index:], Z_line[first_index:], color=lighter_color)
             ax1.plot(length[:first_index], Z_line[:first_index], color=color[i])
