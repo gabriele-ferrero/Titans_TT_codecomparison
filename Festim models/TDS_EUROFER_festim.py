@@ -153,7 +153,7 @@ my_model.dt = F.Stepsize(
     stepsize_stop_max=1,
 )
 my_model.settings = F.Settings(
-    absolute_tolerance=1e12, relative_tolerance=1e-8, final_time=start_tds + t_ramp
+    absolute_tolerance=1e11, relative_tolerance=1e-9, final_time=start_tds + t_ramp
 )
 my_model.initialise()
 my_model.run()
