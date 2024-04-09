@@ -44,4 +44,4 @@ plt.ylabel("Downstream flux (H/m2/s)")
 if __name__ == '__main__':
     os.chdir('graph_scripts_and_results/Purediff')
     plt.savefig('Purediffusion_festim.png')
-    np.savetxt('Purediffusion_festim.txt',np.column_stack([times,np.abs(computed_flux)/2]))
+    np.savetxt('Purediffusion_festim.txt',np.column_stack([times,np.abs(computed_flux)/2]))##Change flux from H to H2

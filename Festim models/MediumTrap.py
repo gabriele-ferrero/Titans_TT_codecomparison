@@ -57,5 +57,5 @@ if __name__ == '__main__':
     os.chdir('graph_scripts_and_results/Strong_Trap')
 
     plt.savefig('Medium_flux_festim.png')
-    np.savetxt('Medium_flux_festim.txt', np.column_stack([times, np.abs(computed_flux)/2]))
+    np.savetxt('Medium_flux_festim.txt', np.column_stack([times, np.abs(computed_flux)/2]))##Change flux from H to H2
 
