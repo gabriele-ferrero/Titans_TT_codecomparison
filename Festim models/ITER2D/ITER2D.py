@@ -1,8 +1,9 @@
+import os
 import festim as F
 from materials import tungsten, cu, cucrzr, trap_conglo, trap_w2
-
+## To be able to run this script, you need to be in the ITER2D folder
 model = F.Simulation()
-
+os.chdir("Festim models/ITER2D")
 
 model.mesh = F.MeshFromXDMF(
     volume_file="mesh_domains.xdmf",
