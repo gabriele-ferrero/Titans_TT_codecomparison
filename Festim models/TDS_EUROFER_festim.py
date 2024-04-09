@@ -172,6 +172,7 @@ plt.xlabel(r"Time (s)")
 
 plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
 plt.xlabel(r"Time (s)")
-os.chdir('graph_scripts_and_results/TDS_EUROFER')
+if __name__ == '__main__':
+    os.chdir('graph_scripts_and_results/TDS_EUROFER')
 
-plt.savefig('TDS_EUROFER_festim.png')
+    plt.savefig('TDS_EUROFER_festim.png')

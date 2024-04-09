@@ -52,10 +52,10 @@ plt.ylim(bottom=0)
 plt.xlabel("Time (s)")
 plt.ylabel("Downstream flux (H/m2/s)")
 import os
+if __name__ == '__main__':
+    # Change the cwd to the desired directory
+    os.chdir('graph_scripts_and_results/Strong_Trap')
 
-# Change the cwd to the desired directory
-os.chdir('graph_scripts_and_results/Strong_Trap')
-
-plt.savefig('Medium_flux_festim.png')
-np.savetxt('Medium_flux_festim.txt', np.column_stack([times, np.abs(computed_flux)/2]))
+    plt.savefig('Medium_flux_festim.png')
+    np.savetxt('Medium_flux_festim.txt', np.column_stack([times, np.abs(computed_flux)/2]))
 

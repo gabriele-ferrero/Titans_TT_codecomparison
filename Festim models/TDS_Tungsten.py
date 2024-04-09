@@ -137,5 +137,6 @@ plt.xlabel(r"Time (s)")
 
 plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
 plt.xlabel(r"Time (s)")
-os.chdir('graph_scripts_and_results/TDS')
-np.savetxt('TDS_W.txt',np.column_stack([T,np.abs(flux_total)]))
+if __name__ == '__main__':
+    os.chdir('graph_scripts_and_results/TDS')
+    np.savetxt('TDS_W.txt',np.column_stack([T,np.abs(flux_total)]))

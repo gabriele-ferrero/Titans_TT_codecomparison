@@ -50,7 +50,8 @@ plt.scatter(times, np.abs(computed_flux)/2, alpha=0.2, label="computed")
 plt.ylim(bottom=0)
 plt.xlabel("Time (s)")
 plt.ylabel("Downstream flux (H/m2/s)")
-os.chdir('graph_scripts_and_results/WeakTrap')
+if __name__ == '__main__':
+    os.chdir('graph_scripts_and_results/WeakTrap')
 
-plt.savefig('Weak_flux_festim.png')
-np.savetxt('Weak_flux_festim.txt',np.column_stack([times,np.abs(computed_flux)/2]))
+    plt.savefig('Weak_flux_festim.png')
+    np.savetxt('Weak_flux_festim.txt',np.column_stack([times,np.abs(computed_flux)/2]))

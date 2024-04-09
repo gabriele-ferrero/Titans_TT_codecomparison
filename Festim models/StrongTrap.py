@@ -54,7 +54,8 @@ plt.xlabel("Time (s)")
 plt.ylabel("Downstream flux (H2/m2/s)")
 plt.ylim([1E-6,1E17])
 plt.xlim([3E5,3.4E5])
-os.chdir('graph_scripts_and_results/Strong_Trap')
+if __name__ == '__main__':
+    os.chdir('graph_scripts_and_results/Strong_Trap')
 
-plt.savefig('Strong_flux_festim.png')
-np.savetxt('Strong_flux_festim.txt',np.column_stack([times,np.abs(computed_flux)/2]))
+    plt.savefig('Strong_flux_festim.png')
+    np.savetxt('Strong_flux_festim.txt',np.column_stack([times,np.abs(computed_flux)/2]))
