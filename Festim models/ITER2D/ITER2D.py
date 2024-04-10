@@ -1,8 +1,10 @@
 import os
 import festim as F
 from materials import tungsten, cu, cucrzr, trap_conglo, trap_w2
-## To be able to run this script, you need to be in the ITER2D folder
+## To be able to run this script, you need to be in the Mainfolder
 model = F.Simulation()
+## Move to the Iter2D folder
+original_directory = os.getcwd()
 os.chdir("Festim models/ITER2D")
 
 model.mesh = F.MeshFromXDMF(
@@ -83,7 +85,7 @@ derived_quantities = F.DerivedQuantities(
         #F.SurfaceFlux(field="solute", surface=id_left_surf),
         #F.SurfaceFlux(field="solute", surface=id_bottom),
     ],
-    filename="derived_quantities_solute.csv",
+    
 )
 
 model.exports = F.Exports(
@@ -95,8 +97,8 @@ model.exports = F.Exports(
     ]
 )
 
-
 # Go back to the base repo directory and then to the result directory
 os.chdir("../../graph_scripts_and_results/ITER2D")
 model.initialise()
 model.run()
+os.chdir(original_directory)

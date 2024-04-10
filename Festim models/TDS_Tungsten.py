@@ -5,7 +5,7 @@ import numpy as np
 import scipy.constants as const
 import numpy as np 
 import matplotlib.pyplot as plt
-
+original_directory = os.getcwd()
 my_model = F.Simulation()
 N_A_const=const.N_A
 
@@ -103,42 +103,43 @@ derived_quantities = F.DerivedQuantities(
 
 
 my_model.exports = [derived_quantities]
-if __name__ == '__main__':
-    os.chdir('graph_scripts_and_results/TDS')
+os.chdir('graph_scripts_and_results/TDS')
     
 my_model.initialise()
 my_model.run()
-t = derived_quantities.t
-flux_left = derived_quantities.filter(fields="solute", surfaces=1).data
-flux_right = derived_quantities.filter(fields="solute", surfaces=2).data
-T = derived_quantities.filter(fields="T", volumes=1).data
-flux_total = -np.array(flux_left) - np.array(flux_right)
 
-plt.plot(t, flux_total, linewidth=3)
-
-plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
-plt.xlabel(r"Time (s)")
-trap_1 = derived_quantities.filter(fields="1").data
-trap_2 = derived_quantities.filter(fields="2").data
-trap_3 = derived_quantities.filter(fields="3").data
-
-contribution_trap_1 = -np.diff(trap_1)/np.diff(t)
-contribution_trap_2 = -np.diff(trap_2)/np.diff(t)
-contribution_trap_3 = -np.diff(trap_3)/np.diff(t)
-plt.plot(T, flux_total, linewidth=3)
-plt.plot(T[1:], contribution_trap_1, linestyle="--", color="grey")
-plt.fill_between(t[1:], 0, contribution_trap_1, facecolor='grey', alpha=0.1)
-plt.plot(T[1:], contribution_trap_2, linestyle="--", color="grey")
-plt.fill_between(T[1:], 0, contribution_trap_2, facecolor='grey', alpha=0.1)
-plt.plot(T[1:], contribution_trap_3, linestyle="--", color="grey")
-plt.fill_between(T[1:], 0, contribution_trap_3, facecolor='grey', alpha=0.1)
-
-plt.xlim(300, 1200)
-plt.ylim(bottom=-1.25e18, top=0.2e20)
-plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
-plt.xlabel(r"Time (s)")
-
-plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
-plt.xlabel(r"Time (s)")
 if __name__ == '__main__':
+    t = derived_quantities.t
+    flux_left = derived_quantities.filter(fields="solute", surfaces=1).data
+    flux_right = derived_quantities.filter(fields="solute", surfaces=2).data
+    T = derived_quantities.filter(fields="T", volumes=1).data
+    flux_total = -np.array(flux_left) - np.array(flux_right)
+
+    plt.plot(t, flux_total, linewidth=3)
+
+    plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
+    plt.xlabel(r"Time (s)")
+    trap_1 = derived_quantities.filter(fields="1").data
+    trap_2 = derived_quantities.filter(fields="2").data
+    trap_3 = derived_quantities.filter(fields="3").data
+
+    contribution_trap_1 = -np.diff(trap_1)/np.diff(t)
+    contribution_trap_2 = -np.diff(trap_2)/np.diff(t)
+    contribution_trap_3 = -np.diff(trap_3)/np.diff(t)
+    plt.plot(T, flux_total, linewidth=3)
+    plt.plot(T[1:], contribution_trap_1, linestyle="--", color="grey")
+    plt.fill_between(t[1:], 0, contribution_trap_1, facecolor='grey', alpha=0.1)
+    plt.plot(T[1:], contribution_trap_2, linestyle="--", color="grey")
+    plt.fill_between(T[1:], 0, contribution_trap_2, facecolor='grey', alpha=0.1)
+    plt.plot(T[1:], contribution_trap_3, linestyle="--", color="grey")
+    plt.fill_between(T[1:], 0, contribution_trap_3, facecolor='grey', alpha=0.1)
+
+    plt.xlim(300, 1200)
+    plt.ylim(bottom=-1.25e18, top=0.2e20)
+    plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
+    plt.xlabel(r"Time (s)")
+
+    plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
+    plt.xlabel(r"Time (s)")
     np.savetxt('TDS_W.txt',np.column_stack([T,np.abs(flux_total)]))
+os.chdir(original_directory)
