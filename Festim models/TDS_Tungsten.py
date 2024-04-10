@@ -103,6 +103,9 @@ derived_quantities = F.DerivedQuantities(
 
 
 my_model.exports = [derived_quantities]
+if __name__ == '__main__':
+    os.chdir('graph_scripts_and_results/TDS')
+    
 my_model.initialise()
 my_model.run()
 t = derived_quantities.t
@@ -138,5 +141,4 @@ plt.xlabel(r"Time (s)")
 plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
 plt.xlabel(r"Time (s)")
 if __name__ == '__main__':
-    os.chdir('graph_scripts_and_results/TDS')
     np.savetxt('TDS_W.txt',np.column_stack([T,np.abs(flux_total)]))

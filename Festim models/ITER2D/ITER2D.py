@@ -83,17 +83,20 @@ derived_quantities = F.DerivedQuantities(
         #F.SurfaceFlux(field="solute", surface=id_left_surf),
         #F.SurfaceFlux(field="solute", surface=id_bottom),
     ],
-    filename="results/derived_quantities_solute.csv",
+    filename="derived_quantities_solute.csv",
 )
 
 model.exports = F.Exports(
     [
         derived_quantities,
-        F.XDMFExport("T", filename="results/temperature.xdmf"),
-        F.XDMFExport("solute", filename="results/mobile.xdmf"),
-        F.XDMFExport("retention", filename="results/retention.xdmf"),
+        F.XDMFExport("T", filename="temperature.xdmf"),
+        F.XDMFExport("solute", filename="mobile.xdmf"),
+        F.XDMFExport("retention", filename="retention.xdmf"),
     ]
 )
 
+
+# Go back to the base repo directory and then to the result directory
+os.chdir("../../graph_scripts_and_results/ITER2D")
 model.initialise()
 model.run()

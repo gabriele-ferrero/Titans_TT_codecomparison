@@ -140,7 +140,7 @@ list_of_derived_quantities = [
 ]
 
 derived_quantities = F.DerivedQuantities(
-    list_of_derived_quantities, filename="tds/derived_quantities.csv"
+    list_of_derived_quantities, filename="derived_quantities.csv"
 )
 
 
@@ -155,6 +155,10 @@ my_model.dt = F.Stepsize(
 my_model.settings = F.Settings(
     absolute_tolerance=1e11, relative_tolerance=1e-9, final_time=start_tds + t_ramp
 )
+if __name__ == '__main__':
+    os.chdir('graph_scripts_and_results/TDS_EUROFER')
+
+    
 my_model.initialise()
 my_model.run()
 t = derived_quantities.t
@@ -173,6 +177,4 @@ plt.xlabel(r"Time (s)")
 plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
 plt.xlabel(r"Time (s)")
 if __name__ == '__main__':
-    os.chdir('graph_scripts_and_results/TDS_EUROFER')
-
     plt.savefig('TDS_EUROFER_festim.png')
