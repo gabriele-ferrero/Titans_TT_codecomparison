@@ -2,13 +2,17 @@
 
 A code comparison study between 3 different Tritium transport softwares for the TITANS project
 mHIT code is based on COMSOL: Candido, L., & Alberghi, C. (2021). Verification and validation of mHIT code over TMAP for hydrogen isotopes transport studies in fusion-relevant environments. Fusion Engineering and Design, 172, 112740.
-FESTIM code is open source -> <https://github.com/RemDelaporteMathurin/FESTIM>
+FESTIM code is [open source](<https://github.com/RemDelaporteMathurin/FESTIM>)
 
-Delaporte-Mathurin, Rémi, et al. "FESTIM: An open-source code for hydrogen transport simulations." International Journal of Hydrogen Energy 63 (2024): 786-802  <https://www.sciencedirect.com/science/article/pii/S0360319924010218>
+The employed FESTIM version is 1.1.1. [How to install festim](https://festim.readthedocs.io/en/latest/installation.html)
 
-R. Delaporte-Mathurin, et al., Finite Element Analysis of Hydrogen Retention in ITER Plasma Facing Components using FESTIM. Nuclear Materials and Energy, 21, (2019). <https://doi.org/10.1016/j.nme.2019.100709>.
+COMSOL version for this study is 6.1. Previous version of COMSOL won't work
 
-R. Delaporte-Mathurin, et al., Parametric Study of Hydrogenic Inventory in the ITER Divertor Based on Machine Learning. Scientific Reports, 10, (2020). <https://doi.org/10.1038/s41598-020-74844-w>.
+Delaporte-Mathurin, Rémi, et al. ["FESTIM: An open-source code for hydrogen transport simulations."](<https://www.sciencedirect.com/science/article/pii/S0360319924010218>) International Journal of Hydrogen Energy 63 (2024): 786-802  
+
+R. Delaporte-Mathurin, et al., [Finite Element Analysis of Hydrogen Retention in ITER Plasma Facing Components using FESTIM.](<https://doi.org/10.1016/j.nme.2019.100709>) Nuclear Materials and Energy, 21, (2019).
+
+R. Delaporte-Mathurin, et al.,[Parametric Study of Hydrogenic Inventory in the ITER Divertor Based on Machine Learning.](<https://doi.org/10.1038/s41598-020-74844-w>) Scientific Reports, 10, (2020).
 
 J. Dark, et al., Influence of hydrogen trapping on WCLL breeding blanket performances. Nuclear Fusion, 62, (2021). <https://doi.org/10.1088/1741-4326/ac28b0>.
 
