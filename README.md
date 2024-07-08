@@ -6,7 +6,7 @@ FESTIM code is [open source](<https://github.com/RemDelaporteMathurin/FESTIM>)
 
 The employed FESTIM version is 1.1.1. [How to install festim](https://festim.readthedocs.io/en/latest/installation.html)
 
-COMSOL version for this study is 6.1. Previous version of COMSOL won't work
+COMSOL version for this study is 6.1. Previous COMSOL versions won't work.
 
 Delaporte-Mathurin, Rémi, et al. ["FESTIM: An open-source code for hydrogen transport simulations."](<https://www.sciencedirect.com/science/article/pii/S0360319924010218>) International Journal of Hydrogen Energy 63 (2024): 786-802  
 
