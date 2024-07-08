@@ -1,8 +1,9 @@
-import os 
+import os
 import festim as F
 import numpy as np
 import sympy as sp
 import scipy.constants as const
+
 original_directory = os.getcwd()
 # TDS simulation of EUROFER for TITANS project. Run with latest festim version
 my_model = F.Simulation()
@@ -139,11 +140,9 @@ list_of_derived_quantities = [
     F.AverageVolume("T", volume=1),
 ]
 
-derived_quantities = F.DerivedQuantities(
-    list_of_derived_quantities
-)
+derived_quantities = F.DerivedQuantities(list_of_derived_quantities)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     my_model.exports = [derived_quantities]
 my_model.dt = F.Stepsize(
     initial_value=1e-6,
@@ -155,11 +154,11 @@ my_model.dt = F.Stepsize(
 my_model.settings = F.Settings(
     absolute_tolerance=1e11, relative_tolerance=1e-9, final_time=start_tds + t_ramp
 )
-os.chdir('graph_scripts_and_results/TDS_EUROFER')  
+os.chdir("graph_scripts_and_results/TDS_EUROFER")
 my_model.initialise()
 my_model.run()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     t = derived_quantities.t
     flux_left = derived_quantities.filter(fields="solute", surfaces=1).data
     Temp = derived_quantities.filter(fields="T", volumes=1).data
@@ -175,5 +174,5 @@ if __name__ == '__main__':
 
     plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
     plt.xlabel(r"Time (s)")
-    plt.savefig('TDS_EUROFER_festim.png')
+    plt.savefig("TDS_EUROFER_festim.png")
 os.chdir(original_directory)
