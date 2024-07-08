@@ -9,6 +9,7 @@ dependencies:
   - pandas
   - scipy
   - numpy<1.25
+  - pytest
   - pip
   - pip:
       - festim==1.1.1
