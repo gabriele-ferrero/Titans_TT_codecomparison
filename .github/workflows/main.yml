@@ -1,21 +1,12 @@
 name: CI
 
-# We can specify which Github events will trigger a CI build
 on: push
 
-# now define a single job 'build' (but could define more)
 jobs:
-
   build:
-
-    # we can also specify the OS to run tests on
     runs-on: ubuntu-latest
 
-    # a job is a seq of steps
     steps:
-
-    # Next we need to checkout out repository, and set up Python
-    # A 'name' is just an optional label shown in the log - helpful to clarify progress - and can be anything
     - name: Checkout repository
       uses: actions/checkout@v4
 
@@ -24,12 +15,18 @@ jobs:
       with:
         python-version: "3.11"
 
+    - name: Install Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: "3.11"
+
     - name: Install Python dependencies
       run: |
         conda env create -f environment.yml
-        
+
     - name: Test with PyTest
+      shell: bash -l {0}
       run: |
-        conda init
         conda activate titans-tt-env
         python3 -m pytest test.py
