@@ -1,0 +1,15 @@
+name: titans-tt-env
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - fenics
+  - matplotlib
+  - ipykernel
+  - pandas
+  - scipy
+  - numpy<1.25
+  - pytest
+  - pip
+  - pip:
+      - festim==1.1.1
