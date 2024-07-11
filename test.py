@@ -14,7 +14,7 @@ def get_python_scripts(directory):
 
 @pytest.mark.parametrize(
     "script",
-    get_python_scripts("Festim models") + get_python_scripts("Festim models/ITER2D"),
+    get_python_scripts("Festim_models") + get_python_scripts("Festim_models/ITER2D"),
 )
 def test_script(script):
     """Test a Python script by running it and checking if it exits with a status of 0."""
