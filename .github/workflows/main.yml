@@ -30,5 +30,6 @@ jobs:
         
     - name: Test with PyTest
       run: 
+        conda init
         conda activate titans-tt-env|
         python3 -m pytest test.py
