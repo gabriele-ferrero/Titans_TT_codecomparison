@@ -1,11 +1,16 @@
 import os
 import festim as F
 from materials import tungsten, cu, cucrzr, trap_conglo, trap_w2
+
 ## To be able to run this script, you need to be in the Mainfolder
 model = F.Simulation()
 ## Move to the Iter2D folder
+
 original_directory = os.getcwd()
-os.chdir("Festim models/ITER2D")
+
+if __name__ == "__main__" or __name__ == "test.py":
+    
+    os.chdir("Festim_models/ITER2D")
 
 model.mesh = F.MeshFromXDMF(
     volume_file="mesh_domains.xdmf",
@@ -39,7 +44,9 @@ convective_heat_flux_coolant = F.ConvectiveFlux(
 
 heat_transfer_bcs = [heat_flux_top, convective_heat_flux_coolant]
 
-instantaneous_recombination_toroidal = F.DirichletBC(value=0, surfaces=id_left_surf , field=0)
+instantaneous_recombination_toroidal = F.DirichletBC(
+    value=0, surfaces=id_left_surf, field=0
+)
 instantaneous_recombination_bottom = F.DirichletBC(value=0, surfaces=id_bottom, field=0)
 
 recombination_flux_coolant = F.RecombinationFlux(
@@ -81,11 +88,10 @@ derived_quantities = F.DerivedQuantities(
         F.TotalVolume(field="solute", volume=tungsten.id),
         F.TotalVolume(field="solute", volume=cu.id),
         F.TotalVolume(field="solute", volume=cucrzr.id),
-        #F.SurfaceFlux(field="solute", surface=id_coolant_surf),
-        #F.SurfaceFlux(field="solute", surface=id_left_surf),
-        #F.SurfaceFlux(field="solute", surface=id_bottom),
+        # F.SurfaceFlux(field="solute", surface=id_coolant_surf),
+        # F.SurfaceFlux(field="solute", surface=id_left_surf),
+        # F.SurfaceFlux(field="solute", surface=id_bottom),
     ],
-    
 )
 
 model.exports = F.Exports(

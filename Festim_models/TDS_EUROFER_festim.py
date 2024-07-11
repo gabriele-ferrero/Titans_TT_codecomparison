@@ -1,8 +1,9 @@
-import os 
+import os
 import festim as F
 import numpy as np
 import sympy as sp
 import scipy.constants as const
+
 original_directory = os.getcwd()
 # TDS simulation of EUROFER for TITANS project. Run with latest festim version
 my_model = F.Simulation()
@@ -72,38 +73,8 @@ import fenics as f
 import sympy as sp
 
 
-class DissociationFlux(FluxBC):
-    """
-    FluxBC subclass for hydrogen dissociation flux.
-    -D(T) * grad(c) * n = Kd(T) * P
-
-    Args:
-        Kd_0 (float or sp.Expr): dissociation coefficient pre-exponential
-            factor (m-2 s-1 Pa-1)
-        E_Kd (float or sp.Expr): dissociation coefficient activation
-            energy (eV)
-        P (float or sp.Expr): partial pressure of H (Pa)
-        surfaces (list or int): the surfaces of the BC
-    """
-
-    def __init__(self, Kd_0, E_Kd, P, surfaces) -> None:
-        self.Kd_0 = Kd_0
-        self.E_Kd = E_Kd
-        self.P = P
-        super().__init__(surfaces=surfaces, field=0)
-
-    def create_form(self, T, solute):
-        Kd_0_expr = f.Expression(sp.printing.ccode(self.Kd_0), t=0, degree=1)
-        E_Kd_expr = f.Expression(sp.printing.ccode(self.E_Kd), t=0, degree=1)
-        P_expr = f.Expression(sp.printing.ccode(self.P), t=0, degree=1)
-
-        Kd = Kd_0_expr * f.exp(-E_Kd_expr / k_B / T)
-        self.form = Kd * P_expr
-        self.sub_expressions = [Kd_0_expr, E_Kd_expr, P_expr]
-
-
 my_model.boundary_conditions = [
-    DissociationFlux(
+    F.DissociationFlux(
         surfaces=[1],
         Kd_0=1.99e-20 * (1.2e-6 * w_atom_density) ** 2,
         E_Kd=0.27 * 2 + 0.73,
@@ -139,11 +110,9 @@ list_of_derived_quantities = [
     F.AverageVolume("T", volume=1),
 ]
 
-derived_quantities = F.DerivedQuantities(
-    list_of_derived_quantities
-)
+derived_quantities = F.DerivedQuantities(list_of_derived_quantities)
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     my_model.exports = [derived_quantities]
 my_model.dt = F.Stepsize(
     initial_value=1e-6,
@@ -155,11 +124,11 @@ my_model.dt = F.Stepsize(
 my_model.settings = F.Settings(
     absolute_tolerance=1e11, relative_tolerance=1e-9, final_time=start_tds + t_ramp
 )
-os.chdir('graph_scripts_and_results/TDS_EUROFER')  
+os.chdir("graph_scripts_and_results/TDS_EUROFER")
 my_model.initialise()
 my_model.run()
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     t = derived_quantities.t
     flux_left = derived_quantities.filter(fields="solute", surfaces=1).data
     Temp = derived_quantities.filter(fields="T", volumes=1).data
@@ -175,5 +144,5 @@ if __name__ == '__main__':
 
     plt.ylabel(r"Desorption flux (m$^{-2}$ s$^{-1}$)")
     plt.xlabel(r"Time (s)")
-    plt.savefig('TDS_EUROFER_festim.png')
+    plt.savefig("TDS_EUROFER_festim.png")
 os.chdir(original_directory)
