@@ -1,0 +1,32 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.11"
+
+    - name: Install Miniconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+        auto-update-conda: true
+        python-version: "3.11"
+
+    - name: Install Python dependencies
+      run: |
+        conda env create -f environment.yml
+
+    - name: Test with PyTest
+      shell: bash -l {0}
+      run: |
+        conda activate titans-tt-env
+        python3 -m pytest test.py
