@@ -5,8 +5,12 @@ from materials import tungsten, cu, cucrzr, trap_conglo, trap_w2
 ## To be able to run this script, you need to be in the Mainfolder
 model = F.Simulation()
 ## Move to the Iter2D folder
+
 original_directory = os.getcwd()
-os.chdir("Festim models/ITER2D")
+
+if __name__ == "__main__" or __name__ == "test.py":
+    
+    os.chdir("Festim_models/ITER2D")
 
 model.mesh = F.MeshFromXDMF(
     volume_file="mesh_domains.xdmf",
