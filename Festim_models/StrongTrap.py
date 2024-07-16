@@ -33,6 +33,8 @@ my_model.dt = F.Stepsize(
     initial_value=1e-2,
     dt_min=1e-3,
     stepsize_change_ratio=1.1,
+    t_stop=1.5E5,
+    stepsize_stop_max=250
 )
 derived_quantities = F.DerivedQuantities([F.HydrogenFlux(surface=2)])
 
