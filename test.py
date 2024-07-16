@@ -23,9 +23,9 @@ def get_notebook_scripts(directory):
 
 @pytest.mark.parametrize(
     "script",
-    # get_notebook_scripts("Festim_models/Jupyter_notebooks")+
+    get_notebook_scripts("Festim_models/Jupyter_notebooks")+
     get_notebook_scripts("MMS")
-    # + get_notebook_scripts("graph_scripts_and_results/ITER2D")
+    + get_notebook_scripts("graph_scripts_and_results/ITER2D")
     + get_notebook_scripts("graph_scripts_and_results/Purediff")
     + get_notebook_scripts("graph_scripts_and_results/Strong_Trap")
     + get_notebook_scripts("graph_scripts_and_results/TDS")
@@ -48,13 +48,13 @@ def test_notebook(script):
     
 
 
-# @pytest.mark.parametrize(
-#     "script",
-#     get_python_scripts("Festim_models") + get_python_scripts("Festim_models/ITER2D"),
-# )
-# def test_script(script):
-#     """Test a Python script by running it and checking if it exits with a status of 0."""
-#     result = subprocess.run(["python", f"{script}"], capture_output=True)
-#     assert (
-#         result.returncode == 0
-#     ), f"Script {script} failed with output:\n{result.stdout.decode()}\n{result.stderr.decode()}"
+@pytest.mark.parametrize(
+    "script",
+    get_python_scripts("Festim_models") + get_python_scripts("Festim_models/ITER2D"),
+)
+def test_script(script):
+    """Test a Python script by running it and checking if it exits with a status of 0."""
+    result = subprocess.run(["python", f"{script}"], capture_output=True)
+    assert (
+        result.returncode == 0
+    ), f"Script {script} failed with output:\n{result.stdout.decode()}\n{result.stderr.decode()}"
