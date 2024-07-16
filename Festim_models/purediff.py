@@ -21,7 +21,7 @@ my_model.traps = []
 my_model.settings = F.Settings(
     absolute_tolerance=1e10, relative_tolerance=1e-10, final_time=100  # s
 )
-my_model.dt = F.Stepsize(initial_value=1e-2, dt_min=1e-3, stepsize_change_ratio=1.1)
+my_model.dt = F.Stepsize(0.5)
 derived_quantities = F.DerivedQuantities([F.HydrogenFlux(surface=2)])
 
 
