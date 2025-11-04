@@ -183,7 +183,7 @@ def plotfun(fun, K, filename, n_lines=3, mms=False):
                 color=color[i],
                 marker="o",
                 s=10,
-                label="COMSOL data",
+                label="mHIT data",
             )
             ax2.scatter(
                 length[first_index::10],
